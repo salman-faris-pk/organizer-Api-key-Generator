@@ -10,7 +10,6 @@ import Companies from './pages/Companies.tsx';
 import PrivateRoute from './components/PrivateRoute.tsx';
 import Layout from './components/Layout.tsx';
 import GitHubCallback from './pages/GitHubCallback.tsx';
-import PublicRoute from './components/PublicRoute.tsx';
 
 
 function App() {
@@ -22,10 +21,8 @@ function App() {
         <Toaster position="top-right"/>
         <Routes>
           
-           <Route element={<PublicRoute />}>
            <Route path="/login" element={<Login />} />
            <Route path="/register" element={<Register />} />
-           </Route>
 
            <Route path="/auth/github/callback" element={<GitHubCallback />} />
 

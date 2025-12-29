@@ -16,9 +16,9 @@ useEffect(() => {
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     setToken(token)
-
-    // window.location.replace('/dashboard');
-    navigate('/dashboard', {replace: true})
+     
+     navigate('/dashboard', {replace: true})
+    
   } else {
     navigate('/login', { replace: true });
   }
