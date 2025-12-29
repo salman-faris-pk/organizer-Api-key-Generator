@@ -13,6 +13,6 @@ const pool = new Pool({
 
 export const db = drizzle(pool);
 
-setInterval(() => {
-  db.execute(`SELECT 1`);
-}, 5000); 
+// setInterval(() => {
+//   db.execute(`SELECT 1`);
+// }, 5000); 
