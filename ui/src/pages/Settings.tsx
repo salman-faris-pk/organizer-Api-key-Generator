@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../auth/useAuth';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import toast from 'react-hot-toast';
 import { FiUser, FiLock, FiSave, FiLoader } from 'react-icons/fi';
 

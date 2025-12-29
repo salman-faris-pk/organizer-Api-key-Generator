@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import { FiLoader } from 'react-icons/fi';
 
 const GitHubCallback: React.FC = () => {

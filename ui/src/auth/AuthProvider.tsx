@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import type { ReactNode } from 'react';
 import { AuthContext, type Company } from './AuthContext';
 

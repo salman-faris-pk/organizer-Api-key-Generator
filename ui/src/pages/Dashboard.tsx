@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../auth/useAuth';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import toast from 'react-hot-toast';
 import {
   FiActivity,
