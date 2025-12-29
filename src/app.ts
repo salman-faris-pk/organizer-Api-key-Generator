@@ -95,7 +95,7 @@ app.get(
       { expiresIn: '7d' }
     );
 
-    res.redirect(`${process.env.CLIENT_URL}/auth/github/callback?token=${token}&apiKey=${user.apiKey}`);
+    res.redirect(`${process.env.CLIENT_URL}/auth/github/callback?token=${token}`);
   }
 );
 
