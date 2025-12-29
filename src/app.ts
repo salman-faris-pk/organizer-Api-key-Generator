@@ -45,7 +45,6 @@ passport.use(
     async (accessToken: string, refreshToken: string,profile:any, done:any) => {
       try {
              console.log('GitHub accessToken received:', accessToken ? 'YES' : 'NO');
-             console.log('Refresh Token:', refreshToken);
 
         const email = profile.emails?.[0].value;
         

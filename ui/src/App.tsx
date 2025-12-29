@@ -10,9 +10,29 @@ import Companies from './pages/Companies.tsx';
 import PrivateRoute from './components/PrivateRoute.tsx';
 import Layout from './components/Layout.tsx';
 import GitHubCallback from './pages/GitHubCallback.tsx';
+import { FiLoader } from 'react-icons/fi';
+import React from 'react';
 
 
 function App() {
+
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (window.location.pathname.includes('/auth/github/callback')) {
+      console.log('On GitHub callback route, ensuring it loads');
+    }
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <FiLoader className="animate-spin h-8 w-8 text-gray-600" />
+      </div>
+    );
+  };
+
   return (
     <Router>
       <AuthProvider>
