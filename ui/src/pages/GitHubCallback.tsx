@@ -16,13 +16,15 @@ useEffect(() => {
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
      setToken(token)
-     
-     navigate('/dashboard', {replace: true})
+
+    //  navigate('/dashboard', {replace: true})
+    window.history.replaceState(null, '', '/dashboard');
     
   } else {
-    navigate('/login', { replace: true });
+    // navigate('/login', { replace: true });
+    window.history.replaceState(null, '', '/login');
   }
- }, []);
+ }, [navigate,setToken]);
 
 
   return (
