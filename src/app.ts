@@ -44,9 +44,14 @@ passport.use(
     },
     async (profile:any, done:any) => {
       try {
+         if (!profile) {
+          return done(new Error('GitHub profile not found'));
+        }
         const email = profile.emails?.[0].value;
         
-        if (!email) return done(new Error('No email found'));
+        if (!email) {
+          return done(new Error('No email found'));
+        }
 
         let [company] = await db
           .select()
