@@ -169,11 +169,11 @@ const ApiKey: React.FC = () => {
           <div>
             <h3 className="font-medium text-gray-900">1. Include in API Requests</h3>
             <p className="text-gray-600 text-sm mt-1">
-              Add your API key to the Authorization header in all API requests:
+              Add your API key to the X-API-KEY header in all API requests:
             </p>
             <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2">
               <code className="font-mono text-sm">
-                Authorization: Bearer {apiKey.substring(0, Math.min(20, apiKey.length))}...
+                X-API-KEY: {apiKey.substring(0, Math.min(20, apiKey.length))}...
               </code>
             </div>
           </div>
@@ -183,7 +183,7 @@ const ApiKey: React.FC = () => {
             <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2">
               <code className="font-mono text-sm whitespace-pre">
 {`curl -X GET \\
-  -H "Authorization: Bearer ${apiKey}" \\
+  -H "X-API-KEY: ${apiKey}" \\
   https://api.example.com/v1/data`}
               </code>
             </div>
@@ -195,11 +195,27 @@ const ApiKey: React.FC = () => {
               <code className="font-mono text-sm whitespace-pre">
 {`fetch('https://api.example.com/v1/data', {
   headers: {
-    'Authorization': 'Bearer ${apiKey}'
+    'X-API-KEY': '${apiKey}'
   }
 })
 .then(response => response.json())
 .then(data => console.log(data));`}
+              </code>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-medium text-gray-900">4. Python Requests Example</h3>
+            <div className="bg-gray-900 text-gray-100 p-4 rounded-lg mt-2">
+              <code className="font-mono text-sm whitespace-pre">
+{`import requests
+
+headers = {
+    'X-API-KEY': '${apiKey}'
+}
+
+response = requests.get('https://api.example.com/v1/data', headers=headers)
+print(response.json())`}
               </code>
             </div>
           </div>

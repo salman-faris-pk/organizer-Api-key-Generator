@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../utils/axiosConfig';
 import toast from 'react-hot-toast';
-import { FiUsers, FiSearch, FiFilter, FiEye, FiToggleLeft, FiToggleRight, FiLoader } from 'react-icons/fi';
+import { FiUsers, FiSearch, FiFilter, FiEye, FiToggleLeft, FiToggleRight, FiLoader, FiLock } from 'react-icons/fi';
+import { useAuth } from '../auth/useAuth';
 
 interface Company {
   id: string;
@@ -14,6 +15,7 @@ interface Company {
 type FilterStatus = 'all' | 'active' | 'inactive';
 
 const Companies: React.FC = () => {
+  const { company: user } = useAuth();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,7 +42,7 @@ const Companies: React.FC = () => {
   };
 
   const toggleCompanyStatus = async (companyId: string, currentStatus: boolean) => {
-    if (updatingIds.has(companyId)) return;
+    if (updatingIds.has(companyId) || !user || user.id !== companyId) return;
     
     setUpdatingIds(prev => new Set(prev).add(companyId));
     
@@ -57,7 +59,6 @@ const Companies: React.FC = () => {
       
       toast.success(response.data.message || 'Company status updated successfully');
     } catch (error: unknown) {
-
       setCompanies(originalCompanies);
       
       if (axios.isAxiosError(error)) {
@@ -72,6 +73,11 @@ const Companies: React.FC = () => {
         return newSet;
       });
     }
+  };
+
+  // Helper function to check if a company can be toggled
+  const canToggleCompany = (companyId: string): boolean => {
+    return !!user && user.id === companyId;
   };
 
   const filteredCompanies = companies.filter(company => {
@@ -159,6 +165,7 @@ const Companies: React.FC = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredCompanies.map((company) => {
                 const isUpdating = updatingIds.has(company.id);
+                const canToggle = canToggleCompany(company.id);
                 
                 return (
                   <tr key={company.id} className="hover:bg-gray-50">
@@ -168,7 +175,14 @@ const Companies: React.FC = () => {
                           <FiUsers className="text-blue-600" />
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{company.name}</div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {company.name}
+                            {user && user.id === company.id && (
+                              <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                You
+                              </span>
+                            )}
+                          </div>
                           <div className="text-sm text-gray-500">{company.email}</div>
                         </div>
                       </div>
@@ -177,13 +191,28 @@ const Companies: React.FC = () => {
                       <div className="flex items-center">
                         <button
                           onClick={() => toggleCompanyStatus(company.id, company.active)}
-                          disabled={isUpdating}
-                          className="relative inline-flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={isUpdating || !canToggle}
+                          className="relative inline-flex items-center disabled:opacity-50 disabled:cursor-not-allowed group"
+                          title={!canToggle ? "You can only update your own company status" : ""}
                         >
                           {isUpdating ? (
                             <>
                               <FiLoader className="animate-spin text-gray-500" size={32} />
                               <span className="ml-2 text-sm font-medium text-gray-600">Updating...</span>
+                            </>
+                          ) : !canToggle ? (
+                            <>
+                              <div className="relative">
+                                {company.active ? (
+                                  <FiToggleRight className="text-green-500 opacity-60" size={32} />
+                                ) : (
+                                  <FiToggleLeft className="text-gray-400 opacity-60" size={32} />
+                                )}
+                                <FiLock className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-600" size={16} />
+                              </div>
+                              <span className={`ml-2 text-sm font-medium ${company.active ? 'text-green-600 opacity-60' : 'text-gray-600 opacity-60'}`}>
+                                {company.active ? 'Active' : 'Inactive'} (you cant access)
+                              </span>
                             </>
                           ) : company.active ? (
                             <>
@@ -249,6 +278,12 @@ const Companies: React.FC = () => {
                 <div className="w-3 h-3 rounded-full bg-gray-400 mr-2"></div>
                 <span>{companies.filter(c => !c.active).length} Inactive</span>
               </div>
+              {user && (
+                <div className="flex items-center">
+                  <div className="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                  <span>Your company: {companies.find(c => c.id === user.id)?.active ? 'Active' : 'Inactive'}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
