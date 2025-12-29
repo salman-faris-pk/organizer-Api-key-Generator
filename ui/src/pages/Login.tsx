@@ -34,7 +34,6 @@ const Login: React.FC = () => {
   };
 
   const handleGitHubLogin = () => {
-     console.log(window.location.pathname);
     window.location.href = '/api/auth/github';
   };
 
