@@ -10,7 +10,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login} = useAuth();
   const navigate = useNavigate();
 
   
@@ -158,3 +158,5 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
+
