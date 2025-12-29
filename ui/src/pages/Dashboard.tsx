@@ -26,26 +26,20 @@ interface DashboardStats {
 }
 
 const Dashboard: React.FC = () => {
-  const { company } = useAuth();
+  const { company,token } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
  useEffect(() => {
-    window.history.pushState(null, "", window.location.href);
-
-    const handleBackButton = () => {
-      window.history.pushState(null, "", window.location.href);
+    if(token){
+      window.location.reload();
       navigate("/dashboard", { replace: true });
-    };
-
-    window.addEventListener("popstate", handleBackButton);
-
-    return () => {
-      window.removeEventListener("popstate", handleBackButton);
-    };
-  }, [navigate]);
+    }else{
+      navigate("/login", { replace: true });
+    }
+  }, [token,navigate]);
 
 
   useEffect(() => {
