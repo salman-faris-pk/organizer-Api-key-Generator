@@ -31,7 +31,7 @@ const Register: React.FC = () => {
     try {
       await register(name, email, password);
       toast.success('Registration successful!');
-      navigate('/dashboard');
+      navigate('/dashboard', {replace: true});
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.error ?? 'registartion failed');

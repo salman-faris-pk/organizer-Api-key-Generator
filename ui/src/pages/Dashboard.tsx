@@ -35,7 +35,6 @@ const Dashboard: React.FC = () => {
 
   const fetchDashboardStats = async () => {
     try {
-      // Use the new dedicated stats endpoint
       const response = await axios.get("/dashboard/stats");
       setStats(response.data.stats);
     } catch (error: unknown) {

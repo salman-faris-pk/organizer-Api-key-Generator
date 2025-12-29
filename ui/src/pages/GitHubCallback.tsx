@@ -7,17 +7,18 @@ const GitHubCallback: React.FC = () => {
   const navigate = useNavigate();
 
 useEffect(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token');
+   const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
 
-  if (token) {
+    if (!token) {
+      navigate('/login', { replace: true });
+      return;
+    }
+
     localStorage.setItem('token', token);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 
-    window.location.replace('/dashboard');
-  } else {
-    navigate('/login', { replace: true });
-  }
+    navigate('/dashboard', { replace: true }); 
  }, []);
 
 
