@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
 import { FiGithub, FiMail, FiLock } from 'react-icons/fi';
 import toast from 'react-hot-toast';
@@ -10,15 +10,9 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login ,isAuthenticated,loading:Loading} = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-
-    if (Loading) return null;
-
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +34,7 @@ const Login: React.FC = () => {
   };
 
   const handleGitHubLogin = () => {
+     sessionStorage.setItem('preAuthPath', window.location.pathname);
     window.location.href = '/api/auth/github';
   };
 
