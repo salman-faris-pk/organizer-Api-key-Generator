@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../utils/axiosConfig';
 import { FiLoader } from 'react-icons/fi';
+import { useAuth } from '../auth/useAuth';
 
 const GitHubCallback: React.FC = () => {
   const navigate = useNavigate();
+  const { setToken }=useAuth()
 
 useEffect(() => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -13,6 +15,7 @@ useEffect(() => {
   if (token) {
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+     setToken(token)
      
      navigate('/dashboard', {replace: true})
     

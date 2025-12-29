@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 export interface Company {
   id: string;
@@ -16,6 +17,7 @@ export interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   loading: boolean;
+  setToken: Dispatch<SetStateAction<string | null>>;
   isAuthenticated: boolean;
   updateCompany: (updatedCompany: Partial<Company>) => void;
 }

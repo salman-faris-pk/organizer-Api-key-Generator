@@ -79,6 +79,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         register,
         logout,
         loading,
+        setToken,
         isAuthenticated: !!token,
         updateCompany
       }}
