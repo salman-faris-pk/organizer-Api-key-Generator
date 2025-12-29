@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = 'https://organizer-api-keys.onrender.com/api/auth/github';
+    window.location.href = '/api/auth/github';
   };
 
   return (

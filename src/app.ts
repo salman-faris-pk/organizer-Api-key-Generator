@@ -42,17 +42,13 @@ passport.use(
       callbackURL: `${process.env.CALLBACK_URL}/api/auth/github/callback`,
       scope: ['user:email']
     },
-    async (profile:any, done:any) => {
+    async (accessToken: string, refreshToken: string,profile:any, done:any) => {
       try {
-         if (!profile) {
-          return done(new Error('GitHub profile not found'));
-        }
+             console.log('GitHub accessToken received:', accessToken ? 'YES' : 'NO');
+             console.log('Refresh Token:', refreshToken);
+
         const email = profile.emails?.[0].value;
         
-        if (!email) {
-          return done(new Error('No email found'));
-        }
-
         let [company] = await db
           .select()
           .from(companies)
@@ -90,7 +86,7 @@ app.get('/api/auth/github', passport.authenticate('github'));
 
 app.get(
   '/api/auth/github/callback',
-  passport.authenticate('github', { session: false }),
+  passport.authenticate('github', { session: false ,failureRedirect: '/login?error=github_auth_failed'}),
   (req: Request, res: Response) => {
     const user = req.user as any;
 
