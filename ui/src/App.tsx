@@ -18,10 +18,12 @@ function App() {
       <AuthProvider>
         <Toaster position="top-right"/>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+
+           <Route path="/login" element={<Login />} />
+           <Route path="/register" element={<Register />} />
            <Route path="/auth/github/callback" element={<GitHubCallback />} />
-          <Route element={<PrivateRoute />}>
+
+           <Route element={<PrivateRoute />}>
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/api-key" element={<ApiKey />} />

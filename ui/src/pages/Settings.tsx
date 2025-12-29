@@ -24,7 +24,7 @@ const Settings: React.FC = () => {
 
   const fetchSettings = async () => {
     try {
-      const response = await axios.get('/api/settings');
+      const response = await axios.get('/settings');
       setName(response.data.name || '');
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -48,7 +48,7 @@ const Settings: React.FC = () => {
     setLoading(true);
     
     try {
-      const response = await axios.put('/api/settings/profile', {
+      const response = await axios.put('/settings/profile', {
         name: name.trim(),
       });
       
@@ -88,7 +88,7 @@ const Settings: React.FC = () => {
     
     setLoading(true);
     try {
-      const response = await axios.put('/api/settings/password', {
+      const response = await axios.put('/settings/password', {
         currentPassword,
         newPassword,
       });

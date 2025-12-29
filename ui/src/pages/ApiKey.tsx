@@ -19,7 +19,7 @@ const ApiKey: React.FC = () => {
   const fetchApiKey = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/api-keys',{
+      const response = await axios.get('/api-keys',{
         headers:{
           'Authorization': `Bearer ${token}`
         }
@@ -44,7 +44,7 @@ const ApiKey: React.FC = () => {
 
     setGenerating(true);
     try {
-      const response = await axios.post('/api/generate-api-key');
+      const response = await axios.post('/generate-api-key');
       const newApiKey = response.data.apiKey;
       
       setApiKey(newApiKey);
