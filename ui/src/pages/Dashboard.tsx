@@ -32,9 +32,21 @@ const Dashboard: React.FC = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+ useEffect(() => {
+  
     navigate("/dashboard", { replace: true });
+
+    const handlePopState = () => {
+      navigate("/dashboard", { replace: true });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
   }, [navigate]);
+
 
   useEffect(() => {
     fetchDashboardStats();
