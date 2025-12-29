@@ -34,7 +34,7 @@ const Login: React.FC = () => {
   };
 
   const handleGitHubLogin = () => {
-     sessionStorage.setItem('preAuthPath', window.location.pathname);
+     console.log(window.location.pathname);
     window.location.href = '/api/auth/github';
   };
 

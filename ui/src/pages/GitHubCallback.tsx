@@ -17,14 +17,10 @@ useEffect(() => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
      setToken(token)
 
-    window.history.replaceState(null, '', '/dashboard');
      navigate('/dashboard', {replace: true})
 
-    
   } else {
-    window.history.replaceState(null, '', '/login');
     navigate('/login', { replace: true });
-
   }
  }, [navigate,setToken]);
 

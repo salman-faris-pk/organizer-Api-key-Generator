@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+
+@view-transition {
+  navigation: auto;
+}
+
 @theme {
   --color-primary: #3b82f6;
   --color-primary-dark: #2563eb;
