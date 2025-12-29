@@ -45,7 +45,6 @@ passport.use(
     async (profile:any, done:any) => {
       try {
         const email = profile.emails?.[0].value;
-        console.log("email",email);
         
         if (!email) return done(new Error('No email found'));
 
