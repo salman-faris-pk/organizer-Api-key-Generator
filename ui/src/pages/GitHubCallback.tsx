@@ -2,23 +2,26 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../utils/axiosConfig';
 import { FiLoader } from 'react-icons/fi';
+import { useAuth } from '../auth/useAuth';
 
 const GitHubCallback: React.FC = () => {
+    const{ setToken }=useAuth()
   const navigate = useNavigate();
 
 useEffect(() => {
-   const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
 
-    if (!token) {
-      navigate('/login', { replace: true });
-      return;
-    }
-
+  if (token) {
     localStorage.setItem('token', token);
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    setToken(token)
 
-    navigate('/dashboard', { replace: true }); 
+    // window.location.replace('/dashboard');
+    navigate('/dashboard', {replace: true})
+  } else {
+    navigate('/login', { replace: true });
+  }
  }, []);
 
 
