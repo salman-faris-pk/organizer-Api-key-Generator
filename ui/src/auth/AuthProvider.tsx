@@ -12,25 +12,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+    useEffect(() => {
     const initAuth = async () => {
-      const storedToken = localStorage.getItem('token');
-      if (storedToken) {
-        try {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-          const response = await axios.get('/dashboard');
-          setCompany(response.data.company);
-        } catch (error) {
-          console.error('Session expired:', error);
-          localStorage.removeItem('token');
-          setToken(null);
-        }
+      if (!token) {
+        setLoading(false);
+        return;
       }
-      setLoading(false);
+
+      try {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        const res = await axios.get('/dashboard');
+        setCompany(res.data.company);
+      } catch (err) {
+        console.error('Auth failed:', err);
+        localStorage.removeItem('token');
+        setToken(null);
+        setCompany(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     initAuth();
-  }, []);
+  }, [token]);
 
   const login = async (email: string, password: string) => {
     const res = await axios.post('/login', {
