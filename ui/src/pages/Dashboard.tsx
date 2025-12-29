@@ -12,7 +12,7 @@ import {
   FiTrendingUp,
   FiSettings,
 } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+
 
 interface DashboardStats {
   totalCompanies: number;
@@ -26,21 +26,9 @@ interface DashboardStats {
 }
 
 const Dashboard: React.FC = () => {
-  const { company,token } = useAuth();
+  const { company } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
-
- useEffect(() => {
-    if(token){
-      window.location.reload();
-      navigate("/dashboard", { replace: true });
-    }else{
-      navigate("/login", { replace: true });
-    }
-  }, [token,navigate]);
-
 
   useEffect(() => {
     fetchDashboardStats();
