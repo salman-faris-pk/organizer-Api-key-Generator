@@ -33,17 +33,17 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
  useEffect(() => {
-  
-    navigate("/dashboard", { replace: true });
+    window.history.pushState(null, "", window.location.href);
 
-    const handlePopState = () => {
+    const handleBackButton = () => {
+      window.history.pushState(null, "", window.location.href);
       navigate("/dashboard", { replace: true });
     };
 
-    window.addEventListener("popstate", handlePopState);
+    window.addEventListener("popstate", handleBackButton);
 
     return () => {
-      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("popstate", handleBackButton);
     };
   }, [navigate]);
 
