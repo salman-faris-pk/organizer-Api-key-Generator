@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { db } from '../config/database';
-import { companies } from '../schemas/company';
+import { db } from '../config/database.js';
+import { companies } from '../schemas/company.js';
 import { eq } from 'drizzle-orm';
 
 interface AuthRequest extends Request {

@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = 'http://localhost:5000/api/auth/github';
+    window.location.href = '/api/auth/github';
   };
 
   return (

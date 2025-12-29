@@ -4,16 +4,16 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.ts",
-    "build": "tsc",
+    "build:ui": "cd ui && npm install && npm run build",
+    "build:server": "tsc",
+    "build": "npm run build:ui && npm run build:server",
     "start": "node dist/server.js",
-    "dev:fullstack": "concurrently \"npm run dev\" \"cd ui && npm run dev\""
+    "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
@@ -37,8 +37,8 @@
     "@types/pg": "^8.16.0",
     "concurrently": "^9.2.1",
     "drizzle-kit": "^0.31.8",
-    "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }

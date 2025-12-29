@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (storedToken) {
         try {
           axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-          const response = await axios.get('http://localhost:5000/api/dashboard');
+          const response = await axios.get('/api/dashboard');
           setCompany(response.data.company);
         } catch (error) {
           console.error('Session expired:', error);
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const res = await axios.post('http://localhost:5000/api/login', {
+    const res = await axios.post('/api/login', {
       email,
       password,
     });
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const register = async (name: string, email: string, password: string) => {
-    const res = await axios.post('http://localhost:5000/api/register', {
+    const res = await axios.post('/api/register', {
       name,
       email,
       password,

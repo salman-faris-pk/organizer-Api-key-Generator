@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { db } from '../config/database';
-import { companies } from '../schemas/company';
+import { db } from '../config/database.js';
+import { companies } from '../schemas/company.js';
 import { count, eq, sql } from 'drizzle-orm';
 import bcrypt from "bcrypt"
 

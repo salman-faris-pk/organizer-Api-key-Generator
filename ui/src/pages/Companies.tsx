@@ -26,7 +26,7 @@ const Companies: React.FC = () => {
 
   const fetchCompanies = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/companies');
+      const response = await axios.get('/api/companies');
       setCompanies(response.data.companies);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -52,7 +52,7 @@ const Companies: React.FC = () => {
 
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/companies/${companyId}/toggle-status`
+        `/api/companies/${companyId}/toggle-status`
       );
       
       toast.success(response.data.message || 'Company status updated successfully');
