@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from '../utils/axiosConfig';
 import type { ReactNode } from 'react';
 import { AuthContext, type Company } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -11,6 +12,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
    const [company, setCompany] = useState<Company | null>(null);
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const initAuth = async () => {
@@ -24,6 +27,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           console.error('Session expired:', error);
           localStorage.removeItem('token');
           setToken(null);
+           navigate('/login', { replace: true });
         }
       }
       setLoading(false);
@@ -68,6 +72,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setToken(null);
     setCompany(null);
     delete axios.defaults.headers.common.Authorization;
+    navigate('/login', { replace: true });
   };
 
   return (
