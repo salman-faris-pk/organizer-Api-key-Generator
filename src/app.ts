@@ -80,11 +80,9 @@ app.get(/.*/, (_req: Request, res: Response) => {
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: 'Route not found' });
 });
-
 
 app.use(
   (err: Error, _req: Request, res: Response, _next: NextFunction) => {

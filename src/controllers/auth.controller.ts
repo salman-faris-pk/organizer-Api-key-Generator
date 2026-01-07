@@ -95,7 +95,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-// Generate API Key
+// Generate or update API Key
 export const updateApiKeyRoute = async (req: AuthRequest, res: Response) => {
   try {
     const companyId = req.companyId;
