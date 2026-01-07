@@ -2,20 +2,15 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
-import { Strategy as GitHubStrategy } from 'passport-github2';
-import { db } from './config/database.js';
-import { companies } from './schemas/company.js';
-import { eq } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 import {
   getDashboard,
-  generateApiKeyRoute,
   getCompanies,
   login,
   register,
-  generateApiKey,
   toggleCompanyStatus,
-  getApiKey
+  getApiKey,
+  updateApiKeyRoute
 } from './controllers/auth.controller.js';
 import { authenticate } from './middleware/auth.middleware.js';
 import {
@@ -25,54 +20,20 @@ import {
   updateProfile
 } from './controllers/dashboard.controller.js';
 import path from 'path';
+import { getRedis } from './config/redis.js';
+import { initializeGitHubStrategy } from './strategies/github.js';
 
 dotenv.config();
 
 const app = express();
 
+getRedis();
+
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
-passport.use(
-  new GitHubStrategy(
-    {
-      clientID: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-      callbackURL: `${process.env.CALLBACK_URL}/api/auth/github/callback`,
-      scope: ['user:email']
-    },
-    async (accessToken: string, refreshToken: string,profile:any, done:any) => {
-      try {
-             console.log('GitHub accessToken received:', accessToken ? 'YES' : 'NO');
-
-        const email = profile.emails?.[0].value;
-        
-        let [company] = await db
-          .select()
-          .from(companies)
-          .where(eq(companies.email, email));
-
-        if (!company) {
-          const apiKey = generateApiKey();
-          [company] = await db
-            .insert(companies)
-            .values({
-              email,
-              name: profile.displayName || profile.username,
-              githubId: profile.id,
-              apiKey
-            })
-            .returning();
-        }
-
-        return done(null, company);
-      } catch (err) {
-        return done(err as Error);
-      }
-    }
-  )
-);
+initializeGitHubStrategy();
 
 app.get('/health', (_: Request, res: Response) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
@@ -101,7 +62,7 @@ app.get(
 
 app.get('/api/dashboard', authenticate, getDashboard);
 app.get('/api/api-keys', authenticate, getApiKey);
-app.post('/api/generate-api-key', authenticate, generateApiKeyRoute);
+app.post('/api/generate-api-key', authenticate, updateApiKeyRoute);
 app.get('/api/companies', authenticate, getCompanies);
 app.patch('/api/companies/:id/toggle-status', authenticate, toggleCompanyStatus);
 app.get('/api/dashboard/stats', authenticate, getDashboardStats);

@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import { db } from '../config/database.js';
 import { companies } from '../schemas/company.js';
 import { eq } from 'drizzle-orm';
+import { getRedis } from "../config/redis.js"
 
 interface AuthRequest extends Request {
   companyId?: string;
@@ -16,6 +17,7 @@ export const generateToken = (payload: { companyId: string; email: string | null
   return jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '7d' });
 };
 
+const redis = getRedis();  
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -42,6 +44,7 @@ export const register = async (req: Request, res: Response) => {
       .values({ email, name, passwordHash, apiKey })
       .returning();
 
+    await redis.set(`apikey:${apiKey}`,"1","EX",60 * 15);
 
     const token = generateToken({ companyId: newCompany.id, email: newCompany.email });
 
@@ -93,10 +96,16 @@ export const login = async (req: Request, res: Response) => {
 };
 
 // Generate API Key
-export const generateApiKeyRoute = async (req: AuthRequest, res: Response) => {
+export const updateApiKeyRoute = async (req: AuthRequest, res: Response) => {
   try {
     const companyId = req.companyId;
     if (!companyId) return res.status(401).json({ error: 'Not authenticated' });
+ 
+    const [oldCompany] = await db
+      .select({ apiKey: companies.apiKey })
+      .from(companies)
+      .where(eq(companies.id, companyId));
+
 
     const newApiKey = generateApiKey();
 
@@ -104,6 +113,12 @@ export const generateApiKeyRoute = async (req: AuthRequest, res: Response) => {
       .set({ apiKey: newApiKey })
       .where(eq(companies.id, companyId))
       .returning();
+
+      if (oldCompany?.apiKey) {
+       await redis.del(`apikey:${oldCompany.apiKey}`);
+      };
+
+      await redis.set(`apikey:${newApiKey}`,"1","EX",60 * 15);
 
     res.json({
       message: 'API key generated successfully',

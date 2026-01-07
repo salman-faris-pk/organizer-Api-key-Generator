@@ -51,7 +51,7 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
         activeCompanies,
         apiKeysGenerated,
         newRegistrations,
-        // Optional trends
+        
         totalCompaniesChange: calculateChange(totalCompanies, totalCompanies - newRegistrations),
         activeCompaniesChange: '0%', 
         apiKeysChange: calculateChange(apiKeysGenerated, apiKeysGenerated - newRegistrations),

@@ -12,7 +12,7 @@ const callApi = async () => {
   }
 };
 
-cron.schedule('*/14 * * * *', async () => {
+cron.schedule('*/13 * * * *', async () => {
   console.log(`[${new Date().toISOString()}] Running scheduled API call...`);
   await callApi();
 });
